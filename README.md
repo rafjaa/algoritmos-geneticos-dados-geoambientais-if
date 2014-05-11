@@ -1,3 +1,11 @@
 # Projeto para III FECIB 2014
 
-_Algoritmos Genéticos aplicados ao processamento de dados geoambientais do Instituto Federal do Sudeste de Minas Gerais, Câmpus Barbacena_
+__Algoritmos Genéticos aplicados ao processamento de dados geoambientais do Instituto Federal do Sudeste de Minas Gerais, Câmpus Barbacena__
+
+_Instituto Federal do Sudeste de Minas Gerais, Câmpus Barbacena - Curso Superior de Tecnologia em Sistemas para Internet_
+
+__Alunos__: Evandro da Silveira Loschi, Flávio Lucio de Paula Gonzaga Junior, Lucas Gabriel de Araújo Assis, Rafael Leandro Dias Braga Milagres
+__Co-orientador:__ Prof. Herlon Ayres Camargo
+__Orientador:__ Prof. Rafael José de Alencar Almeida
+
+
