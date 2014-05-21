@@ -3,6 +3,7 @@
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
+from time import sleep
 
 
 def grafico_geracoes(gen):
@@ -12,8 +13,13 @@ def grafico_geracoes(gen):
 
     '''
 
+    plt.ion()
+
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
+    ax.set_xlabel(u'X - População')
+    ax.set_ylabel(u'Y - Geração')
+    ax.set_zlabel(u'Z - Custo do percurso')
 
     # Gradiente de cores
     tr = ['#ff0000', '#ff1000', '#ff2000', '#ff3000', '#ff4000', '#ff5000', '#ff6000', '#ff7000', '#ff8000', '#ff9000']
@@ -44,7 +50,12 @@ def grafico_geracoes(gen):
 
         gradient = tr + ty + tg
 
-    # Constrói o gráfico
+    
+    plt.draw()
+
+    # Constrói o gráfico animado
+    FRAME_TIME = 0.2
+
     for c, z in zip(gradient, range(1, num_gen +1)):
         xs = np.arange(len(gen[0]))
         ys = gen[z - 1]
@@ -56,27 +67,45 @@ def grafico_geracoes(gen):
         cs = [c] * len(xs)
         ax.bar(xs, ys, zs=z, zdir='y', color=cs, alpha=0.8)
 
-    # Labels dos eixos
-    ax.set_xlabel(u'X - População')
-    ax.set_ylabel(u'Y - Geração')
-    ax.set_zlabel(u'Z - Custo do percurso')
+        plt.draw()
+        sleep(FRAME_TIME)
 
+    # Desativa a animação e exibe o gráfico 3D manipulável
+    plt.ioff()  
     plt.show()
 
 
-def test():
+def test_geracoes():
     GEN = [
         [100, 99, 99, 96, 90, 89, 89, 89, 87, 80],
         [100, 99, 99, 96, 80, 72, 71, 50, 50, 49],
         [80, 72, 72, 70, 51, 49, 41, 40, 40, 39],
         [110, 99, 70, 60, 55, 54, 53, 39, 38, 31],
-        [94, 90, 83, 79, 55, 54, 53, 39, 20, 11],
-        [110, 99, 70, 60, 55, 32, 31, 25, 11, 10]
+        [94, 90, 83, 79, 55, 54, 53, 39, 20, 11]
     ]
 
     grafico_geracoes(GEN)
 
 
+def grafico_convergencia(values):
+    '''
+        Plota um gráfico de linha mostrando a evolução do indivíduo
+        mais adaptado de cada geração, convergindo para um resultado
+        progressivamente mais otimizado.
+
+        Também exibe um gráfico de barras com a otimização atingida em
+        relação à geração anterior.
+    '''
+    pass
+
+
+def test_convergencia():
+    VAL = [90, 89, 78, 75, 74, 73, 68, 55, 51, 46, 39, 34]
+
+    grafico_convergencia(VAL)
+
+
 if __name__ == '__main__':
-    test()
+    test_geracoes()
+    test_convergencia()
 
