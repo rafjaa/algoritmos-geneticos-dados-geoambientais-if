@@ -10,7 +10,6 @@ def grafico_geracoes(gen):
     '''
         Plota um gráfico 3D exibindo a otimização dos indivúduos ao longo
         das gerações.
-
     '''
 
     plt.ion()
@@ -83,29 +82,32 @@ def test_geracoes():
         [110, 99, 70, 60, 55, 54, 53, 39, 38, 31],
         [94, 90, 83, 79, 55, 54, 53, 39, 20, 11]
     ]
-
     grafico_geracoes(GEN)
 
 
-def grafico_convergencia(values):
+def grafico_convergencia(evolucao):
     '''
         Plota um gráfico de linha mostrando a evolução do indivíduo
         mais adaptado de cada geração, convergindo para um resultado
         progressivamente mais otimizado.
-
-        Também exibe um gráfico de barras com a otimização atingida em
-        relação à geração anterior.
     '''
-    pass
+    
+    ax = plt.subplots()[1]
+
+    ax.set_title(u'Melhor indivíduo ao longo das gerações')
+    ax.set_xlabel(u'Geração')
+    ax.set_ylabel(u'Distância percorrida')
+
+    ax.plot(range(1, len(evolucao) + 1), evolucao)
+
+    plt.show()
 
 
 def test_convergencia():
-    VAL = [90, 89, 78, 75, 74, 73, 68, 55, 51, 46, 39, 34]
-
-    grafico_convergencia(VAL)
+    EVOLUCAO = [150, 145, 100, 93, 93, 84, 80, 79, 79, 66]
+    grafico_convergencia(EVOLUCAO)
 
 
 if __name__ == '__main__':
     test_geracoes()
     test_convergencia()
-
