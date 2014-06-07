@@ -9,6 +9,7 @@ from flask import jsonify, request
 
 app = Flask(__name__)
 
+
 @app.route('/genesis', methods=['GET'])
 def genesis():
     '''
