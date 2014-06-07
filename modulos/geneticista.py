@@ -314,6 +314,12 @@ class Populacao:
 		'''
 		self._populacao.sort(key = lambda i:i.peso())
 
+	def melhor_da_geracao():
+		'''
+			Retorna o melhor indivíduo da geração.
+		'''
+		return None if self._geracao_atual == 0 else self._populacao[0]
+
 	def proxima_geracao(self):
 		'''
 			Gera a próxima geração, preservando os n melhores indivíduos e colocando os filhos
