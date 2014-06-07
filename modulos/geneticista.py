@@ -314,7 +314,7 @@ class Populacao:
 		'''
 		self._populacao.sort(key = lambda i:i.peso())
 
-	def melhor_da_geracao():
+	def melhor_da_geracao(self):
 		'''
 			Retorna o melhor indivíduo da geração.
 		'''
