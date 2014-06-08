@@ -99,7 +99,7 @@ class Individuo:
     '''
     # Define para a classe um objeto de conexões, permitindo definir o peso do indivíduo e
     # obter conexões indiretas para o indivíduo, se necessário.
-    _conexoes = Conexoes('../dados/distancias.dat')
+    _conexoes = Conexoes('dados/distancias.dat')
     # Define para a classe ausência de mutação. Poderá ser moficado externamente.
     taxa_mutacao = 0
     # Mantém na classe um dicionário com os pesos das conexões indiretas já avaliadas, evitando repetição de cálculos
@@ -377,11 +377,11 @@ class Populacao:
 
 
 if __name__=='__main__':
-	popu = Populacao(120,12,1200,0.05,'gar')
+	popu = Populacao(120,10,1200,0.05,'gar')
 	arquivo = open('../dados/melhores.html','w')
 	arquivo.write('''<html><head><meta charset="utf-8"><title>Melhores individuos ao longo das gerações</title>
 		<style> table tr td {min-width: 200px; text-align: center;} .rota{text-align:left}</style></head>
-		<body><table border="1"><tr><th>geração</th><th>custo (km)</th><th>pontos visitados</th><th>rota</th></tr>''')
+		<body><table border="1"><tr><th>geração</th><th>custo (metros)</th><th>pontos visitados</th><th>rota</th></tr>''')
 
 	best = None
 	i = 0
