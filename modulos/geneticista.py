@@ -344,21 +344,27 @@ class Populacao:
 		# se ainda possuir gerações possíveis, gera a próxima
 		elif self._geracao_atual < self._total_geracoes:
 		
-			# preserva os N melhores para a próxima geração
-			preservados = []
-			for x in xrange(self._quantidade_melhores):
-				preservados.append(self._populacao[x])
+			# os N melhores com certeza sobrevivem na população
+			restantes = []
+			while len(self._populacao) > self._quantidade_melhores:
+				restantes.append(self._populacao.pop())
 
-			# cruza os indivíduos aos pares (aleatórios)
+            # os indivíduos restantes poderão sobreviver ou não
+			random.shuffle(restantes)
+			total_sobreviventes = self._tamanho_populacao / 2
+			total_sobreviventes += 1 if total_sobreviventes % 2 else 0
+			self._populacao.extend(restantes[:total_sobreviventes - len(self._populacao)])
+
+			# os indivíduos sobreviventes irão se reproduzir (em pares  aleatórios)
 			random.shuffle(self._populacao)
 			metade = len(self._populacao) / 2
 			for x in xrange(metade):
 				self._populacao.extend(self._populacao[x] + self._populacao[x + metade])
 
-			# atualiza a população da geração atual (N melhores + restante melhores, para completar a população)
+			# atualiza a população da geração atual (exclui o excesso, se houver)
 			self._ordenar_populacao()
-			self._populacao = preservados + self._populacao[:self._tamanho_populacao - self._quantidade_melhores]
-			self._ordenar_populacao()
+			while len(self._populacao) > self._tamanho_populacao:
+				self._populacao.pop()
 
 			self._geracao_atual += 1
 
