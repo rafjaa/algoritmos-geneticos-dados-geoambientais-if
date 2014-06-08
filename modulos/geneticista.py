@@ -127,21 +127,12 @@ class Individuo:
         if origem and origem in self._conexoes.pontos():
             self._origem = origem
             self._rota = self._gera_rota()
-            self._sub_rotas = {}
             self._peso = self._avaliar_peso()
         # gera o indivíduo com a rota informada, se os dados forem válidos
         elif especifico and sorted(especifico) == sorted(self._conexoes.pontos()):
             self._origem = especifico[0]
             self._rota = especifico
             self._peso = self._avaliar_peso()
-
-    def __str__(self):
-        '''
-            APAGAR ESSA FUNCAO ????????????????????????????????????????????????????????????????????
-        '''
-        retorno = ' - '.join(self._rota)
-        retorno += '\n Peso: ' + str(self._peso)
-        return retorno
 
     def __add__(self, parceira):
         '''
@@ -282,11 +273,24 @@ class Individuo:
         '''
         return self._rota[:]
 
-    def copia_sub_rota(self,i,j):
-        '''
-            Retorna uma cópia de uma sub-rota i,j do invíduo ou None, se ele não possuí-la.
-        '''
-        return self._sub_rotas.get((i,j))
+    def copia_rota_expandida(self):
+    	'''
+    		Retorna uma cópia da rota do indivíduo, substituindo os trechos que não possuem conexão direta
+    		pela sub-rota correspondente.
+    	'''
+    	retorno = [self._rota[0]]
+    	limite = len(self._rota)
+    	# percorre a rota do indivíduo
+    	for x in xrange(limite):
+    		# copia os pontos
+    		i = self._rota[x]
+    		j = self._rota[(x + 1) % limite]
+
+    		# copia o trecho percorrido
+    		retorno.extend([j] if self._conexoes.distancia(i, j) else self._conexoes.sub_rota(i, j)[1:])
+
+    	return retorno
+
 
 class Populacao:
 
@@ -367,7 +371,7 @@ class Populacao:
 
 
 if __name__=='__main__':
-	popu = Populacao(100,5,1000,0.042,'ni')
+	popu = Populacao(100,10,1000,0.05,'ni')
 	arquivo = open('resultado.txt','w')
 	best = None
 	i = 0
@@ -379,8 +383,9 @@ if __name__=='__main__':
 			break
 
 		if not best or popu.melhor_da_geracao().peso() < best.peso():
-			print i
+			print "melhor indivíduo encontrado na geração ",i
 			best = popu.melhor_da_geracao()
-			arquivo.write("%d\t%.2f\t%s\n" % (i, best.peso(), '-'.join(best.copia_rota())))
-	
+			rota = best.copia_rota_expandida()
+			arquivo.write("%d\t%.2f\t%d\t%s\n" % (i, best.peso(), len(rota), '-'.join(rota)))
+
 	arquivo.close()
