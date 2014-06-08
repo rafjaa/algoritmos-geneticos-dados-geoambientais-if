@@ -340,20 +340,20 @@ class Populacao:
 		# se ainda possuir gerações possíveis, gera a próxima
 		elif self._geracao_atual < self._total_geracoes:
 		
-			# preserva os 10 melhores
+			# preserva os N melhores para a próxima geração
 			preservados = []
 			for x in xrange(self._quantidade_melhores):
-				preservados.append(self._populacao.pop(0))
+				preservados.append(self._populacao[x])
 
-			# cruza os indivíduos restantes aos pares (aleatórios)
+			# cruza os indivíduos aos pares (aleatórios)
 			random.shuffle(self._populacao)
-			novos = []
-			for x in xrange(len(self._populacao) / 2):
-				novos.extend(self._populacao.pop() + self._populacao.pop())
+			metade = len(self._populacao) / 2
+			for x in xrange(metade):
+				self._populacao.extend(self._populacao[x] + self._populacao[x + metade])
 
-			# atualiza a população da geração atual (10 melhores, filhos gerados e talvez 1 indivíduo não cruzado)
-			self._populacao += preservados
-			self._populacao += novos
+			# atualiza a população da geração atual (N melhores + restante melhores, para completar a população)
+			self._ordenar_populacao()
+			self._populacao = preservados + self._populacao[:self._tamanho_populacao - self._quantidade_melhores]
 			self._ordenar_populacao()
 
 			self._geracao_atual += 1
@@ -367,10 +367,12 @@ class Populacao:
 
 
 if __name__=='__main__':
-	popu = Populacao(4,1,1000,0.042,'ni')
+	popu = Populacao(100,5,1000,0.042,'ni')
 
+	arquivo = open('resultado.txt','w')
 	while 1:
 		p = popu.proxima_geracao()
 		if not p:
 			break
-		print p
+		arquivo.write(str(p[0])+'\n')
+	arquivo.close()
