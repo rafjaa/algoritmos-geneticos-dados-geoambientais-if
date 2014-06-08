@@ -99,10 +99,7 @@ class Individuo:
     '''
     # Define para a classe um objeto de conexões, permitindo definir o peso do indivíduo e
     # obter conexões indiretas para o indivíduo, se necessário.
-    if __name__=='__main__':
-        _conexoes = Conexoes('../dados/distancias.dat')
-    else:
-        _conexoes = Conexoes('dados/distancias.dat')
+    _conexoes = Conexoes('../dados/distancias.dat')
     # Define para a classe ausência de mutação. Poderá ser moficado externamente.
     taxa_mutacao = 0
     # Mantém na classe um dicionário com os pesos das conexões indiretas já avaliadas, evitando repetição de cálculos
@@ -253,7 +250,7 @@ class Individuo:
 
     def _mutar(self, rota):
         '''
-            Executa uma mutação sobre uma rota, trocando dois de seus pontos aleatórios de lugar.
+            Executa uma mutação sobre uma rota, trocando dois de seus pontos de lugar aleatoreamente.
         '''
         # define (aleatoriamente) se deve ou não mutar
         if self.taxa_mutacao == 0 or self.taxa_mutacao < random.random():
@@ -263,7 +260,7 @@ class Individuo:
         ponto1 = random.randint(1,len(rota)-1)
         ponto2 = random.randint(1,len(rota)-1)
         while ponto1 == ponto2:
-            ponto2 = random.randint(0,len(rota)-1)
+            ponto2 = random.randint(1,len(rota)-1)
 
         # efetua a troca
         rota[ponto1], rota[ponto2] =rota[ponto2], rota[ponto1]
@@ -374,10 +371,15 @@ class Populacao:
 
 
 if __name__=='__main__':
-	popu = Populacao(100,10,1000,0.05,'ni')
-	arquivo = open('resultado.txt','w')
+	popu = Populacao(120,12,1200,0.05,'gar')
+	arquivo = open('../dados/melhores.html','w')
+	arquivo.write('''<html><head><meta charset="utf-8"><title>Melhores individuos ao longo das gerações</title>
+		<style> table tr td {min-width: 200px; text-align: center;} .rota{text-align:left}</style></head>
+		<body><table border="1"><tr><th>geração</th><th>custo (km)</th><th>pontos visitados</th><th>rota</th></tr>''')
+
 	best = None
 	i = 0
+	linhas = []
 	while 1:
 		i += 1
 		p = popu.proxima_geracao()
@@ -386,9 +388,11 @@ if __name__=='__main__':
 			break
 
 		if not best or popu.melhor_da_geracao().peso() < best.peso():
-			print "melhor indivíduo encontrado na geração ",i
 			best = popu.melhor_da_geracao()
 			rota = best.copia_rota_expandida()
-			arquivo.write("%d\t%.2f\t%d\t%s\n" % (i, best.peso(), len(rota), '-'.join(rota)))
+			linhas.append('<tr><td>%d</td><td>%.2f</td><td>%d</td><td class="rota">%s</td><tr>' % (i, best.peso(), len(rota), ' '.join(rota)))
 
+	linhas.reverse()
+	arquivo.write(''.join(linhas))
+	arquivo.write('</table></body></html>')
 	arquivo.close()
