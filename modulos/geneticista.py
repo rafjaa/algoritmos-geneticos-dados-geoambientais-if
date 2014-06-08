@@ -368,11 +368,19 @@ class Populacao:
 
 if __name__=='__main__':
 	popu = Populacao(100,5,1000,0.042,'ni')
-
 	arquivo = open('resultado.txt','w')
+	best = None
+	i = 0
 	while 1:
+		i += 1
 		p = popu.proxima_geracao()
+
 		if not p:
 			break
-		arquivo.write(str(p[0])+'\n')
+
+		if not best or popu.melhor_da_geracao().peso() < best.peso():
+			print i
+			best = popu.melhor_da_geracao()
+			arquivo.write("%d\t%.2f\t%s\n" % (i, best.peso(), '-'.join(best.copia_rota())))
+	
 	arquivo.close()
