@@ -11,9 +11,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    '''
+        Página principal, exibe a interface web para utilização do algoritmo.
+    '''
     return render_template('index.html')
 
-@app.route('/genesis', methods=['GET'])
+
+@app.route('/genesis', methods=['POST', 'GET'])
 def genesis():
     '''
         Recebe os parâmetros da interface web e executa o algoritmo genético.
@@ -21,35 +25,42 @@ def genesis():
     '''
 
     if request.method == 'GET':
+        tamanho_populacao = 100
+        quantidade_melhores = 10
+        numero_geracoes = 1000
+        percentual_mutacao = 0.05
+        ponto_inicial = 'ni'
+
+    elif request.method == 'POST':
         tamanho_populacao = int(request.args.post('tamanho_populacao'))
         quantidade_melhores = int(request.args.post('quantidade_melhores'))
         numero_geracoes = int(request.args.post('numero_geracoes'))
         percentual_mutacao = int(request.args.post('percentual_populacao')) / 100.
         ponto_inicial = request.args.post('ponto_inicial')
 
-        # Tempo de execução
-        tempo_inicial = time.time()
+    # Tempo de execução
+    tempo_inicial = time.time()
 
-        populacao = geneticista.Populacao(tamanho_populacao, quantidade_melhores, numero_geracoes, percentual_mutacao, ponto_inicial)
+    populacao = geneticista.Populacao(tamanho_populacao, quantidade_melhores, numero_geracoes, percentual_mutacao, ponto_inicial)
+    
+    tempo_execucao = time.time() - tempo_inicial
+
+    evolucao = []
+    
+    while True:
+        geracao = populacao.proxima_geracao()
+
+        if not geracao:
+            break
        
-        tempo_execucao = time.time() - tempo_inicial
+        geracao.reverse()
+        evolucao.append(geracao)
 
-        evolucao = []
-        
+    json.dump(evolucao, open('dados/geracoes.json', 'w'))
 
-        while True:
-            geracao = populacao.proxima_geracao()
+    melhor_individuo = populacao.melhor_da_geracao()
 
-            if not geracao:
-                break
-           
-            geracao.reverse()
-            evolucao.append(geracao)
-
-        json.dump(evolucao, open('temp/geracoes.json', 'w'))
-        melhor_individuo = populacao.melhor_da_geracao()
-
-        return jsonify(rota=melhor_individuo.copia_rota(), peso=melhor_individuo.peso(), tempo_execucao=tempo_execucao)
+    return jsonify(rota=melhor_individuo.copia_rota(), peso=melhor_individuo.peso(), tempo_execucao=tempo_execucao)
 
 
 @app.route('/grafico/geracoes')
@@ -57,12 +68,13 @@ def grafico_geracoes():
     AMOSTRAGEM = 20 # Porcentagem
 
     geracoes = json.load(open('dados/geracoes.json'))
+
     marcador = len(geracoes) / AMOSTRAGEM
 
     amostra = []
-
+    
     for i, j in enumerate(geracoes):
-         if not i % marcador:
+        if not i % marcador:
             amostra.append(j)
 
     graficos.grafico_geracoes(amostra)

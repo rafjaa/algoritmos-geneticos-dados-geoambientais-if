@@ -99,7 +99,10 @@ class Individuo:
     '''
     # Define para a classe um objeto de conexões, permitindo definir o peso do indivíduo e
     # obter conexões indiretas para o indivíduo, se necessário.
-    _conexoes = Conexoes('dados/distancias.dat')
+    if __name__=='__main__':
+        _conexoes = Conexoes('../dados/distancias.dat')
+    else:
+        _conexoes = Conexoes('dados/distancias.dat')
     # Define para a classe ausência de mutação. Poderá ser moficado externamente.
     taxa_mutacao = 0
     # Mantém na classe um dicionário com os pesos das conexões indiretas já avaliadas, evitando repetição de cálculos
