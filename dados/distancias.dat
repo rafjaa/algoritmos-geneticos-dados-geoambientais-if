@@ -5,7 +5,7 @@ bib;fape;367.95;
 bib;lan1;108.04;
 cor;bib;175.5;
 cor;sed1;62.35
-dap;as;53.28
+dap;as;53,28
 des;dap;32.18
 des;fape;314.45;
 des;gar;411.3
@@ -28,11 +28,11 @@ gar;quad2;159.88
 lan1;lan2;15.56;
 lan2;anex;299.2;
 lan2;cor;71.53;
-lan2;sed1;99.40
-lan2;sed2;109.56
+lan2;sed1;99.40;
+lan2;sed2;109.56;
 lat;naa;981.29
 lat;nag;930.68
-lat;niv;1053.64
+lat;nav;1053.64
 lat;quad1;141.13
 lat;quad2;160.24
 naa;equ;542.74
