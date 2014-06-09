@@ -16,9 +16,10 @@ def grafico_geracoes(gen):
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.set_xlabel(u'X - População')
-    ax.set_ylabel(u'Y - Geração')
-    ax.set_zlabel(u'Z - Custo do percurso')
+    ax.set_title(u'Otimização dos indivíduos ao longo das gerações')
+    ax.set_xlabel(u'População')
+    ax.set_ylabel(u'Geração')
+    ax.set_zlabel(u'Custo do percurso')
 
     # Gradiente de cores
     tr = ['#ff0000', '#ff1000', '#ff2000', '#ff3000', '#ff4000', '#ff5000', '#ff6000', '#ff7000', '#ff8000', '#ff9000']
@@ -98,13 +99,13 @@ def grafico_convergencia(evolucao):
     ax.set_xlabel(u'Geração')
     ax.set_ylabel(u'Distância percorrida')
 
-    ax.plot(range(1, len(evolucao) + 1), evolucao)
+    ax.loglog(range(1, len(evolucao) + 1), evolucao)
 
     plt.show()
 
 
 def test_convergencia():
-    EVOLUCAO = [150, 145, 100, 93, 93, 84, 80, 79, 79, 66]
+    EVOLUCAO = [150, 149, 149, 148, 147, 145, 100, 93, 93, 84, 80, 79, 79, 66, 65, 60]
     grafico_convergencia(EVOLUCAO)
 
 
